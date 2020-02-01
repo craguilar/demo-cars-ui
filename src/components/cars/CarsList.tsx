@@ -19,23 +19,41 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     { "plate": "MX-002", "make": "Mazda", "model": "Mazda 6", "description": "Test", "typeOfUse": "Particular" },
   ]
 
-  populateListCar(){
-    return(
+  onButtonClick(plate: string) {
+    console.log(plate);
+  }
+  
+  populateListHeader() {
+    return (
       <tr>
-        <td>
-          <Button variant="info">Edit</Button>
-        </td>
-        <td>GLD-CA01</td>
-        <td>Audi</td>
-        <td>A3</td>
-        <td>Test car</td>
-        <td>Particular</td>
+        <th>#</th>
+        <th>Plate</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Description</th>
+        <th>Type of use</th>
       </tr>
     )
   }
 
+  populateListCar(){
+    return this.cars.map((car)=>{
+      return (
+        <tr>
+          <td>
+            <Button key={car.plate} variant="info" onClick={()=>{this.onButtonClick(car.plate)}}>Edit</Button>
+          </td>
+          <td>{car.plate}</td>
+          <td>{car.make}</td>
+          <td>{car.model}</td>
+          <td>{car.description}</td>
+          <td>{car.typeOfUse}</td>
+        </tr>
+      )
+    })
+  }
+
   render() {
- 
     return (
       <div>
         <div>
@@ -44,14 +62,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
         <div>
           <Table striped bordered hover>
             <thead>
-              <tr>
-                <th>#</th>
-                <th>Plate</th>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Description</th>
-                <th>Type of use</th>
-              </tr>
+              {this.populateListHeader()}
             </thead>
             <tbody>
               {this.populateListCar()}
