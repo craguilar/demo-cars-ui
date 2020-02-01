@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { CarList } from "./cars/CarsList";
+import { Banner } from "./announcements/Banner";
 
 // Importing the Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,6 +24,7 @@ const App: React.FC = () => {
         </Navbar.Collapse>
       </Navbar>
       <div>
+        <Banner/>
         <CarList userName={userName} />
       </div>
     </div>
