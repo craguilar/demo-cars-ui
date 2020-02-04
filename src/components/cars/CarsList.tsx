@@ -2,6 +2,7 @@ import * as React from "react";
 import Table from "react-bootstrap/Table"
 import Button from "react-bootstrap/Button"
 import {CarSummary} from "./model/CarSummary"
+import { CarDetails } from "./CarDetails";
 
 // Properties 
 export interface CarListProps { 
@@ -69,6 +70,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
             </tbody>
           </Table>
         </div>
+        <CarDetails typeOfForm="New"/>
       </div>
     );
   }

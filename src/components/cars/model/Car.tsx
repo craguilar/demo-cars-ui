@@ -58,5 +58,4 @@ export interface Car {
    * @memberof Car
    */
   company?: string;
-
 }
