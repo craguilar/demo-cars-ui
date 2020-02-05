@@ -1,5 +1,6 @@
 import * as React from "react";
 import Table from "react-bootstrap/Table"
+import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Button from "react-bootstrap/Button"
 import {CarSummary} from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
@@ -9,16 +10,28 @@ export interface CarListProps {
   userName: string; 
 }
 // State
-export interface CarListState { }
+export interface CarListState { 
+  cars: CarSummary[]
+}
 
-
-
+/**
+  * This class implements main cars logic .
+  * The properties associated to it it are:
+  *   - logged on userName
+  * The state associated to it contains:
+  *   - List of cars. 
+  */
 export class CarList extends React.Component<CarListProps, CarListState> {
 
-  cars: CarSummary[] = [
+  carsTest: CarSummary[] = [
     { "plate": "CA-001", "make": "Audi", "model": "A3", "description": "Test","typeOfUse":"Particular"  },
     { "plate": "MX-002", "make": "Mazda", "model": "Mazda 6", "description": "Test", "typeOfUse": "Particular" },
   ]
+
+  constructor(props: CarListProps) {
+    super(props);
+    this.state = { cars: this.carsTest };
+  }
 
   onButtonClick(plate: string) {
     console.log(plate);
@@ -38,11 +51,11 @@ export class CarList extends React.Component<CarListProps, CarListState> {
   }
 
   populateListCar(){
-    return this.cars.map((car)=>{
+    return this.state.cars.map((car)=>{
       return (
         <tr>
           <td>
-            <Button key={car.plate} variant="info" onClick={()=>{this.onButtonClick(car.plate)}}>Edit</Button>
+            <Button key={car.plate} variant="primary" onClick={()=>{this.onButtonClick(car.plate)}}>Edit</Button>
           </td>
           <td>{car.plate}</td>
           <td>{car.make}</td>
@@ -60,6 +73,12 @@ export class CarList extends React.Component<CarListProps, CarListState> {
         <div>
           <h2>All cars for {this.props.userName} </h2>
         </div>
+        <div style={{ textAlign: 'right' }}>
+          <ButtonGroup aria-label="Tool bar">
+            <Button variant="success">+Add car</Button>
+          </ButtonGroup>
+        </div>
+        <br/>
         <div>
           <Table striped bordered hover>
             <thead>
