@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 
 export interface CarDetailsProps {
   typeOfForm: string;
+  onSubmit: () => void
 }
 
 export interface CarDetailsState { }
@@ -90,7 +91,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Control as="textarea" rows="3" />
           </Form.Group>
           <Form.Group as={Col}>
-            <Button  type="submit">Submit</Button>
+            <Button type="submit" onClick={this.props.onSubmit} >Submit</Button>
           </Form.Group>
         </Form>
       </div>);

@@ -33,11 +33,19 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     this.state = { cars: this.carsTest };
   }
 
-  onButtonClick(plate: string) {
-    console.log(plate);
+  onEditButtonClick(plate: string) {
+    alert(plate);
+  }
+
+  onAddButtonClick(){
+    alert('Add car');
   }
   
-  populateListHeader() {
+  onSubmitCarClick = () => {
+    alert('Click happened')
+  }
+  
+  populateTableHeader() {
     return (
       <tr>
         <th>#</th>
@@ -50,12 +58,12 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     )
   }
 
-  populateListCar(){
+  populateTableCar(){
     return this.state.cars.map((car)=>{
       return (
         <tr>
           <td>
-            <Button key={car.plate} variant="primary" onClick={()=>{this.onButtonClick(car.plate)}}>Edit</Button>
+            <Button key={car.plate} variant="primary" onClick={() => { this.onEditButtonClick(car.plate)}}>Edit</Button>
           </td>
           <td>{car.plate}</td>
           <td>{car.make}</td>
@@ -75,21 +83,21 @@ export class CarList extends React.Component<CarListProps, CarListState> {
         </div>
         <div style={{ textAlign: 'right' }}>
           <ButtonGroup aria-label="Tool bar">
-            <Button variant="success">+Add car</Button>
+            <Button variant="success" onClick={() => { this.onAddButtonClick() }}>+Add car</Button>
           </ButtonGroup>
         </div>
         <br/>
         <div>
           <Table striped bordered hover>
             <thead>
-              {this.populateListHeader()}
+              {this.populateTableHeader()}
             </thead>
             <tbody>
-              {this.populateListCar()}
+              {this.populateTableCar()}
             </tbody>
           </Table>
         </div>
-        <CarDetails typeOfForm="New"/>
+        <CarDetails typeOfForm="New" onSubmit={this.onSubmitCarClick} />
       </div>
     );
   }
