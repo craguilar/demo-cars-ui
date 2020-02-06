@@ -2,6 +2,7 @@ import * as React from "react";
 import Table from "react-bootstrap/Table"
 import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Button from "react-bootstrap/Button"
+import { Car } from "./model/Car"
 import {CarSummary} from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
 
@@ -41,10 +42,43 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     alert('Add car');
   }
   
-  onSubmitCarClick = () => {
-    alert('Click happened')
+  onSubmitCarClick = (event: any) => {
+    let elements = event.target.elements
+    if (elements.length > 0) {
+      let car = this.getCarFromForm(elements)
+      this.state.cars.push(car)
+      this.setState({
+        cars: this.state.cars
+      }) 
+    }
   }
-  
+
+  getCarFromForm(elements: any){
+    let plate = elements[0].value
+    let make = elements[1].value
+    let model = elements[2].value
+    let typeOfUse = elements[3].value
+    let nationalKey = elements[4].value
+    let serialNumber = elements[5].value
+    let engineSerialNumber = elements[6].value
+    let company = elements[7].value
+    let description = elements[8].value
+    let car: Car = {
+      plate: plate,
+      make: make,
+      model: model,
+      typeOfUse: typeOfUse,
+      nationalKey: nationalKey,
+      serialNumber: serialNumber,
+      engineSerialNumber: engineSerialNumber,
+      company: company,
+      description: description
+    }
+    return car
+  }
+      
+    
+      
   populateTableHeader() {
     return (
       <tr>
