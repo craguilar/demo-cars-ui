@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button"
 import { Car } from "./model/Car"
 import {CarSummary} from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
+import { CarRepository } from "./CarRepository";
 
 // Properties 
 export interface CarListProps { 
@@ -24,22 +25,21 @@ export interface CarListState {
   */
 export class CarList extends React.Component<CarListProps, CarListState> {
 
-  carsTest: CarSummary[] = [
-    { "plate": "CA-001", "make": "Audi", "model": "A3", "description": "Test","typeOfUse":"Particular"  },
-    { "plate": "MX-002", "make": "Mazda", "model": "Mazda 6", "description": "Test", "typeOfUse": "Particular" },
-  ]
+  repository = new CarRepository();
+  carDetailsComponent: React.RefObject<CarDetails>;
 
   constructor(props: CarListProps) {
     super(props);
-    this.state = { cars: this.carsTest };
+    this.state = { cars: this.repository.listCars() };
+    this.carDetailsComponent = React.createRef();
   }
 
   onEditButtonClick(plate: string) {
-    alert(plate);
+    this.carDetailsComponent.current?.handleShow("Update", plate)
   }
 
   onAddButtonClick(){
-    alert('Add car');
+    this.carDetailsComponent.current?.handleShow("New","")
   }
   
   onSubmitCarClick = (event: any) => {
@@ -51,6 +51,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
         cars: this.state.cars
       }) 
     }
+    event.preventDefault()
   }
 
   getCarFromForm(elements: any){
@@ -76,9 +77,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     }
     return car
   }
-      
-    
-      
+           
   populateTableHeader() {
     return (
       <tr>
@@ -131,7 +130,8 @@ export class CarList extends React.Component<CarListProps, CarListState> {
             </tbody>
           </Table>
         </div>
-        <CarDetails typeOfForm="New" onSubmit={this.onSubmitCarClick} />
+        
+        <CarDetails ref={this.carDetailsComponent} currentPlate="" onSubmit={this.onSubmitCarClick} />
       </div>
     );
   }
