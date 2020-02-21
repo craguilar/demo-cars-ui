@@ -5,11 +5,12 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
 export interface CarDetailsProps {
-  onSubmit: (event: any) => void
+  onSubmit: (event: any) => void,
+  currentCar: Car
 }
 
 export interface CarDetailsState {
-  currentCar: Car
+ 
 }
 
 export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState>{
@@ -17,10 +18,6 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
   constructor(props: CarDetailsProps) {
     super(props);
     this.state = { currentCar: {} as Car  };
-  }
-
-  handleShow( plate: string){
-  
   }
 
   render() {
@@ -32,7 +29,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
               Plates
             </Form.Label>
             <Col>
-              <Form.Control type="text" placeholder="Enter your plate number" required />
+              <Form.Control type="text" placeholder="Enter your plate number" value={this.props.currentCar.plate} required />
             </Col>
           </Form.Group>
           <Form.Row>
@@ -41,7 +38,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Make
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Make" required  />
+                <Form.Control type="text" placeholder="Make" value={this.props.currentCar.make} required  />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="modelInput">
@@ -49,7 +46,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Model
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Model" required   />
+                <Form.Control type="text" placeholder="Model" value={this.props.currentCar.model} required   />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="typeOfUseInput">
@@ -68,7 +65,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 National key
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Provie tarjeta de circulacion" />
+                <Form.Control type="text" placeholder="Tarjeta de circulacion" value={this.props.currentCar.nationalKey} />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="serialNumberInput">
@@ -76,7 +73,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Serial Number
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="" />
+                <Form.Control type="text" placeholder="" value={this.props.currentCar.serialNumber}/>
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="engineSerialNumberInput">
@@ -84,7 +81,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Engine serial number
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="" />
+                <Form.Control type="text" placeholder="" value={this.props.currentCar.engineSerialNumber}/>
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="companyInput">
@@ -92,7 +89,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Company
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Company...t" />
+                <Form.Control type="text" placeholder="Companyt" value={this.props.currentCar.company} />
               </Col>
             </Form.Group>
           </Form.Row>
@@ -100,7 +97,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Label >
               Description
             </Form.Label>
-            <Form.Control as="textarea" rows="3" />
+            <Form.Control as="textarea" rows="3" value={this.props.currentCar.description}/>
           </Form.Group>
           <Form.Group as={Col}>
             <Button type="submit" >Submit</Button>

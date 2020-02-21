@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button"
 import { Car } from "./model/Car"
 import {CarSummary} from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
-import { CarRepository } from "./CarRepository";
+import { CarRepository } from "./repository/CarRepository";
 import Modal from "react-bootstrap/Modal";
 
 
@@ -17,7 +17,8 @@ export interface CarListProps {
 export interface CarListState { 
   cars: CarSummary[],
   showModal : boolean,
-  typeOfOperation : string
+  typeOfOperation : string,
+  currentCar: Car
 }
 
 /**
@@ -34,18 +35,20 @@ export class CarList extends React.Component<CarListProps, CarListState> {
 
   constructor(props: CarListProps) {
     super(props);
-    this.state = { cars: this.repository.listCars(), showModal: false, typeOfOperation : 'New' };
+    this.state = { cars: this.repository.listCars(), showModal: false, typeOfOperation: 'New', currentCar: {} as Car };
     this.carDetailsComponent = React.createRef();
     this.handleModalClose = this.handleModalClose.bind(this)
     this.onAddButtonClick = this.onAddButtonClick.bind(this)
   }
 
   onEditButtonClick(plate: string) {
+    let car = this.repository.getCar(plate)
     this.setState({
       showModal: true,
-      typeOfOperation: 'Update'
+      typeOfOperation: 'Update',
+      currentCar: car
     })
-    this.carDetailsComponent.current?.handleShow( plate)
+    
   }
 
   handleModalClose() {
@@ -57,23 +60,23 @@ export class CarList extends React.Component<CarListProps, CarListState> {
   onAddButtonClick(){
     this.setState({
       showModal: true,
-      typeOfOperation: 'New'
-    }) 
-    this.carDetailsComponent.current?.handleShow('')
- 
+      typeOfOperation: 'New',
+      currentCar: {} as Car
+    })
   }
   
   onSubmitCarClick = (event: any) => {
     let elements = event.target.elements
     if (elements.length > 0) {
       let car = this.getCarFromForm(elements)
+      this.repository.addCar(car)
       this.state.cars.push(car)
       this.setState({
         cars: this.state.cars
       }) 
     }
     this.setState({
-      showModal: false,
+      showModal: false
     })
     event.preventDefault()
   }
@@ -160,7 +163,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
             <Modal.Title>{this.state.typeOfOperation} car</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <CarDetails ref={this.carDetailsComponent} onSubmit={this.onSubmitCarClick} />
+            <CarDetails ref={this.carDetailsComponent} currentCar={this.state.currentCar} onSubmit={this.onSubmitCarClick} />
           </Modal.Body>
         </Modal>
 
