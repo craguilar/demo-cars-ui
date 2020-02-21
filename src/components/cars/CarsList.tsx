@@ -6,6 +6,8 @@ import { Car } from "./model/Car"
 import {CarSummary} from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
 import { CarRepository } from "./CarRepository";
+import Modal from "react-bootstrap/Modal";
+
 
 // Properties 
 export interface CarListProps { 
@@ -13,7 +15,9 @@ export interface CarListProps {
 }
 // State
 export interface CarListState { 
-  cars: CarSummary[]
+  cars: CarSummary[],
+  showModal : boolean,
+  typeOfOperation : string
 }
 
 /**
@@ -30,16 +34,33 @@ export class CarList extends React.Component<CarListProps, CarListState> {
 
   constructor(props: CarListProps) {
     super(props);
-    this.state = { cars: this.repository.listCars() };
+    this.state = { cars: this.repository.listCars(), showModal: false, typeOfOperation : 'New' };
     this.carDetailsComponent = React.createRef();
+    this.handleModalClose = this.handleModalClose.bind(this)
+    this.onAddButtonClick = this.onAddButtonClick.bind(this)
   }
 
   onEditButtonClick(plate: string) {
-    this.carDetailsComponent.current?.handleShow("Update", plate)
+    this.setState({
+      showModal: true,
+      typeOfOperation: 'Update'
+    })
+    this.carDetailsComponent.current?.handleShow( plate)
+  }
+
+  handleModalClose() {
+    this.setState({
+      showModal: false
+    }) 
   }
 
   onAddButtonClick(){
-    this.carDetailsComponent.current?.handleShow("New","")
+    this.setState({
+      showModal: true,
+      typeOfOperation: 'New'
+    }) 
+    this.carDetailsComponent.current?.handleShow('')
+ 
   }
   
   onSubmitCarClick = (event: any) => {
@@ -51,6 +72,9 @@ export class CarList extends React.Component<CarListProps, CarListState> {
         cars: this.state.cars
       }) 
     }
+    this.setState({
+      showModal: false,
+    })
     event.preventDefault()
   }
 
@@ -131,7 +155,15 @@ export class CarList extends React.Component<CarListProps, CarListState> {
           </Table>
         </div>
         
-        <CarDetails ref={this.carDetailsComponent} currentPlate="" onSubmit={this.onSubmitCarClick} />
+        <Modal show={this.state.showModal} onHide={this.handleModalClose} size="lg" >
+          <Modal.Header closeButton>
+            <Modal.Title>{this.state.typeOfOperation} car</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <CarDetails ref={this.carDetailsComponent} onSubmit={this.onSubmitCarClick} />
+          </Modal.Body>
+        </Modal>
+
       </div>
     );
   }
