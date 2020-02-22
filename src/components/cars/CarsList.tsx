@@ -28,28 +28,22 @@ export interface CarListState {
   * The state associated to it contains:
   *   - List of cars. 
   */
+const NEW_TYPE_OF_OPERATION: string = 'New';
+const UPDATE_TYPE_OF_OPERATION : string = 'Update';
+
 export class CarList extends React.Component<CarListProps, CarListState> {
+
 
   repository = new CarRepository();
   carDetailsComponent: React.RefObject<CarDetails>;
 
   constructor(props: CarListProps) {
     super(props);
-    this.state = { cars: [], showModal: false, typeOfOperation: 'New', currentCar: {} as Car };
-    this.initializeList()
+    this.state = { cars: [], showModal: false, typeOfOperation: NEW_TYPE_OF_OPERATION, currentCar: {} as Car };
+    this.refreshList()
     this.carDetailsComponent = React.createRef();
     this.handleModalClose = this.handleModalClose.bind(this)
     this.onAddButtonClick = this.onAddButtonClick.bind(this)
-  }
-
-  initializeList() {
-    this.repository.listCars().then(results => {
-      this.setState({
-        cars: results
-      })
-    }).catch(error => {
-      alert(error)
-    })
   }
 
   handleModalClose() {
@@ -58,41 +52,63 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     })
   }
 
-  onEditButtonClick(plate: string) {
-    let car = this.repository.getCar(plate)
-    this.setState({
-      showModal: true,
-      typeOfOperation: 'Update',
-      currentCar: car
+  refreshList() {
+    this.repository.listCars(undefined, 10, '0', "ASC", undefined).then(results => {
+      this.setState({
+        cars: results
+      })
+    }).catch(error => {
+      alert(error)
     })
+  }
 
+  onEditButtonClick(plate: string) {
+    this.repository.getCar(plate).then(result=>{
+      this.setState({
+        showModal: true,
+        typeOfOperation: UPDATE_TYPE_OF_OPERATION,
+        currentCar: result
+      })
+    }).catch(error=>{
+      alert(error)
+    })
   }
 
   onAddButtonClick() {
     this.setState({
       showModal: true,
-      typeOfOperation: 'New',
+      typeOfOperation: NEW_TYPE_OF_OPERATION,
       currentCar: {} as Car
     })
   }
 
-  /**
-  * TODO: Need to handle type of operation logic .
-  */
   onSubmitCarClick = (event: any) => {
+    
     let elements = event.target.elements
     if (elements.length > 0) {
       let car = this.getCarFromForm(elements)
-      this.repository.addCar(car)
-      this.state.cars.push(car)
-      this.setState({
-        cars: this.state.cars
-      })
+      this.handleCarUpdate(car)
     }
     this.setState({
       showModal: false
     })
     event.preventDefault()
+  }
+
+  handleCarUpdate(car: Car){
+    if (this.state.typeOfOperation === NEW_TYPE_OF_OPERATION) {
+      this.repository.addCar(car).then(result=>{
+        this.refreshList()
+      }).catch(error=>{
+        alert(error)
+      })
+    } else {
+      this.repository.updateCar(car).then(result => {
+        this.refreshList()
+      }).catch(error => {
+        alert(error)
+      })
+    }
   }
 
   getCarFromForm(elements: any) {

@@ -5,7 +5,7 @@ import { CarsApi } from "./typescript-fetch-client/api"
 
 export class CarRepository {
 
-  fetchApi: CarsApi;
+  private fetchApi: CarsApi;
 
   mockDataSummary: CarSummary[] = [
     { "plate": "GLD-CA01", "make": "Audi", "model": "A3", "description": "Test", "typeOfUse": "Particular" },
@@ -27,17 +27,40 @@ export class CarRepository {
     this.fetchApi = new CarsApi();
   }
 
-  listCars(): Promise<any> {
-    return this.fetchApi.listCars(undefined, 10, '0', "ASC", undefined, {});
+  listCars(fields?: Array<string>, limit?: number, page?: string, sortOrder?: 'ASC' | 'DESC', sortBy?: string): Promise<any> {
+    return this.fetchApi.listCars(fields, limit, page, sortOrder, sortBy, {});
   }
 
-  addCar(car: Car): Car {
+  listMockCars(){
+    return this.mockDataSummary;
+  }
+
+  getCar(id: string): Promise<Car> {
+    return this.fetchApi.getCar(id, undefined, undefined);
+  }
+
+  getMockCar(id: string): Car{
+    return this.mockData.filter(x => x.plate === id)[0];
+  }
+
+  addCar(car: Car): Promise<Car> {
+    return this.fetchApi.addCar(car, undefined)
+  }
+
+  addMockCar(car: Car): Car {
     this.mockData.push(car)
     return car
   }
 
-  getCar(id: string): Car {
-    return this.mockData.filter(x => x.plate === id)[0];
+  updateCar(car: Car): Promise<Car> {
+   return this.fetchApi.updateCar(car,undefined)
+  }
+
+  updateMockCar(car: Car) : Car{
+    let element = this.mockData.filter(x => x.plate === car.plate)[0]
+    let index = this.mockData.indexOf(element)
+    this.mockData[index] = car
+    return car
   }
 
 }
