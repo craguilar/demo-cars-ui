@@ -1,8 +1,11 @@
 
 import { Car } from "../model/Car"
 import { CarSummary } from "../model/CarSummary"
+import { CarsApi } from "../typescript-fetch-client/api"
 
 export class CarRepository {
+
+  fetchApi : CarsApi;
 
   mockDataSummary: CarSummary[] = [
     { "plate": "CA-001", "make": "Audi", "model": "A3", "description": "Test", "typeOfUse": "Particular" },
@@ -21,11 +24,11 @@ export class CarRepository {
   ];
 
   constructor() {
-
+    this.fetchApi = new CarsApi();
   }
 
-  listCars(): CarSummary[] {
-    return this.mockDataSummary
+  listCars(): Promise<any> {
+    return this.fetchApi.listCars(undefined, 10, '0', "ASC", undefined, {});
   }
 
   addCar(car: Car): Car {
@@ -34,7 +37,7 @@ export class CarRepository {
   }
 
   getCar(id: string): Car {
-    return this.mockData.filter(x => x.plate == id)[0];
+    return this.mockData.filter(x => x.plate === id)[0];
   }
 
 }

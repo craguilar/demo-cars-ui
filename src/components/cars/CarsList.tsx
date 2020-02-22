@@ -35,10 +35,21 @@ export class CarList extends React.Component<CarListProps, CarListState> {
 
   constructor(props: CarListProps) {
     super(props);
-    this.state = { cars: this.repository.listCars(), showModal: false, typeOfOperation: 'New', currentCar: {} as Car };
+    this.state = { cars: [], showModal: false, typeOfOperation: 'New', currentCar: {} as Car };
+    this.initializeList()
     this.carDetailsComponent = React.createRef();
     this.handleModalClose = this.handleModalClose.bind(this)
     this.onAddButtonClick = this.onAddButtonClick.bind(this)
+  }
+
+  initializeList(){
+    this.repository.listCars().then(results => {
+     this.setState({
+       cars : results
+     })
+    }).catch(error => {
+      alert(error)
+    })
   }
 
   onEditButtonClick(plate: string) {
