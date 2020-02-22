@@ -13,7 +13,6 @@
  */
 
 import { Car } from "../model/Car";
-import { CarSummary } from "../model/CarSummary";
 import * as url from "url";
 import * as portableFetch from "portable-fetch";
 import { Configuration } from "./configuration";
@@ -56,7 +55,7 @@ export interface FetchArgs {
  * @class BaseAPI
  */
 export class BaseAPI {
-    
+
     protected configuration: Configuration = {};
 
     constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected fetch: FetchAPI = portableFetch) {
@@ -74,7 +73,7 @@ export class BaseAPI {
  * @extends {Error}
  */
 export class RequiredError extends Error {
-    name: string =  "RequiredError"
+    name: string = "RequiredError"
     constructor(public field: string, msg?: string) {
         super(msg);
     }
@@ -97,7 +96,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
         addCar(body: Car, options: any = {}): FetchArgs {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling addCar.');
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling addCar.');
             }
             const localVarPath = `/cars/`;
             const localVarUrlObj = url.parse(localVarPath, true);
@@ -112,7 +111,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
             const needsSerialization = (<any>"Car" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(body || {}) : (body || "");
+            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -130,7 +129,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
         getCar(carId: string, fields?: Array<string>, options: any = {}): FetchArgs {
             // verify required parameter 'carId' is not null or undefined
             if (carId === null || carId === undefined) {
-                throw new RequiredError('carId','Required parameter carId was null or undefined when calling getCar.');
+                throw new RequiredError('carId', 'Required parameter carId was null or undefined when calling getCar.');
             }
             const localVarPath = `/cars/{carId}`
                 .replace(`{${"carId"}}`, encodeURIComponent(String(carId)));
@@ -211,7 +210,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
         updateCar(body: Car, options: any = {}): FetchArgs {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling updateCar.');
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling updateCar.');
             }
             const localVarPath = `/cars/`;
             const localVarUrlObj = url.parse(localVarPath, true);
@@ -226,7 +225,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
             const needsSerialization = (<any>"Car" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(body || {}) : (body || "");
+            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -240,7 +239,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
  * CarsApi - functional programming interface
  * @export
  */
-export const CarsApiFp = function(configuration?: Configuration) {
+export const CarsApiFp = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -296,7 +295,7 @@ export const CarsApiFp = function(configuration?: Configuration) {
             const localVarFetchArgs = CarsApiFetchParamCreator(configuration).listCars(fields, limit, page, sortOrder, sortBy, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
+                    if ((response.status >= 200 && response.status < 300) || response.status === 404) {
                         return response.json();
                     } else {
                         throw response;

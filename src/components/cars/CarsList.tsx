@@ -3,21 +3,21 @@ import Table from "react-bootstrap/Table"
 import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Button from "react-bootstrap/Button"
 import { Car } from "./model/Car"
-import {CarSummary} from "./model/CarSummary"
+import { CarSummary } from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
-import { CarRepository } from "./repository/CarRepository";
+import { CarRepository } from "./CarRepository";
 import Modal from "react-bootstrap/Modal";
 
 
 // Properties 
-export interface CarListProps { 
-  userName: string; 
+export interface CarListProps {
+  userName: string;
 }
 // State
-export interface CarListState { 
+export interface CarListState {
   cars: CarSummary[],
-  showModal : boolean,
-  typeOfOperation : string,
+  showModal: boolean,
+  typeOfOperation: string,
   currentCar: Car
 }
 
@@ -42,13 +42,19 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     this.onAddButtonClick = this.onAddButtonClick.bind(this)
   }
 
-  initializeList(){
+  initializeList() {
     this.repository.listCars().then(results => {
-     this.setState({
-       cars : results
-     })
+      this.setState({
+        cars: results
+      })
     }).catch(error => {
       alert(error)
+    })
+  }
+
+  handleModalClose() {
+    this.setState({
+      showModal: false
     })
   }
 
@@ -59,23 +65,20 @@ export class CarList extends React.Component<CarListProps, CarListState> {
       typeOfOperation: 'Update',
       currentCar: car
     })
-    
+
   }
 
-  handleModalClose() {
-    this.setState({
-      showModal: false
-    }) 
-  }
-
-  onAddButtonClick(){
+  onAddButtonClick() {
     this.setState({
       showModal: true,
       typeOfOperation: 'New',
       currentCar: {} as Car
     })
   }
-  
+
+  /**
+  * TODO: Need to handle type of operation logic .
+  */
   onSubmitCarClick = (event: any) => {
     let elements = event.target.elements
     if (elements.length > 0) {
@@ -84,7 +87,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
       this.state.cars.push(car)
       this.setState({
         cars: this.state.cars
-      }) 
+      })
     }
     this.setState({
       showModal: false
@@ -92,7 +95,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     event.preventDefault()
   }
 
-  getCarFromForm(elements: any){
+  getCarFromForm(elements: any) {
     let plate = elements[0].value
     let make = elements[1].value
     let model = elements[2].value
@@ -115,7 +118,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     }
     return car
   }
-           
+
   populateTableHeader() {
     return (
       <tr>
@@ -129,12 +132,12 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     )
   }
 
-  populateTableCar(){
-    return this.state.cars.map((car)=>{
+  populateTableCar() {
+    return this.state.cars.map((car) => {
       return (
         <tr>
           <td>
-            <Button key={car.plate} variant="primary" onClick={() => { this.onEditButtonClick(car.plate)}}>Edit</Button>
+            <Button key={car.plate} variant="primary" onClick={() => { this.onEditButtonClick(car.plate) }}>Edit</Button>
           </td>
           <td>{car.plate}</td>
           <td>{car.make}</td>
@@ -157,7 +160,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
             <Button variant="success" onClick={() => { this.onAddButtonClick() }}>+Add car</Button>
           </ButtonGroup>
         </div>
-        <br/>
+        <br />
         <div>
           <Table striped bordered hover>
             <thead>
@@ -168,7 +171,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
             </tbody>
           </Table>
         </div>
-        
+
         <Modal show={this.state.showModal} onHide={this.handleModalClose} size="lg" >
           <Modal.Header closeButton>
             <Modal.Title>{this.state.typeOfOperation} car</Modal.Title>

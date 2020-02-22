@@ -1,20 +1,20 @@
 
-import { Car } from "../model/Car"
-import { CarSummary } from "../model/CarSummary"
-import { CarsApi } from "../typescript-fetch-client/api"
+import { Car } from "./model/Car"
+import { CarSummary } from "./model/CarSummary"
+import { CarsApi } from "./typescript-fetch-client/api"
 
 export class CarRepository {
 
-  fetchApi : CarsApi;
+  fetchApi: CarsApi;
 
   mockDataSummary: CarSummary[] = [
-    { "plate": "CA-001", "make": "Audi", "model": "A3", "description": "Test", "typeOfUse": "Particular" },
+    { "plate": "GLD-CA01", "make": "Audi", "model": "A3", "description": "Test", "typeOfUse": "Particular" },
     { "plate": "MX-002", "make": "Mazda", "model": "Mazda 6", "description": "Test", "typeOfUse": "Particular" },
   ];
 
   mockData: Car[] = [
     {
-      "plate": "CA-001", "make": "Audi", "model": "A3", "description": "Test",
+      "plate": "GLD-CA01", "make": "Audi", "model": "A3", "description": "Test",
       "typeOfUse": "Particular", "nationalKey": "410003354", "serialNumber": "ZJL-123", "engineSerialNumber": "", "company": "New Eden"
     },
     {

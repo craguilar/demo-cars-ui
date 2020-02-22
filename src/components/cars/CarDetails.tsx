@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Car} from "./model/Car";
+import { Car } from "./model/Car";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
@@ -10,14 +10,14 @@ export interface CarDetailsProps {
 }
 
 export interface CarDetailsState {
- 
+
 }
 
 export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState>{
 
   constructor(props: CarDetailsProps) {
     super(props);
-    this.state = { currentCar: {} as Car  };
+    this.state = { currentCar: {} as Car };
   }
 
   render() {
@@ -38,7 +38,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Make
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Make" value={this.props.currentCar.make} required  />
+                <Form.Control type="text" placeholder="Make" defaultValue={this.props.currentCar.make} required />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="modelInput">
@@ -46,14 +46,14 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Model
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Model" value={this.props.currentCar.model} required   />
+                <Form.Control type="text" placeholder="Model" defaultValue={this.props.currentCar.model} required />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="typeOfUseInput">
               <Form.Label>
                 Type of use
             </Form.Label>
-              <Form.Control as="select">
+              <Form.Control as="select" defaultValue={this.props.currentCar.typeOfUse}>
                 <option>Particular</option>
                 <option>Company</option>
               </Form.Control>
@@ -65,7 +65,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 National key
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Tarjeta de circulacion" value={this.props.currentCar.nationalKey} />
+                <Form.Control type="text" placeholder="Tarjeta de circulacion" defaultValue={this.props.currentCar.nationalKey} />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="serialNumberInput">
@@ -73,7 +73,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Serial Number
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="" value={this.props.currentCar.serialNumber}/>
+                <Form.Control type="text" placeholder="" defaultValue={this.props.currentCar.serialNumber} />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="engineSerialNumberInput">
@@ -81,7 +81,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Engine serial number
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="" value={this.props.currentCar.engineSerialNumber}/>
+                <Form.Control type="text" placeholder="" defaultValue={this.props.currentCar.engineSerialNumber} />
               </Col>
             </Form.Group>
             <Form.Group as={Col} controlId="companyInput">
@@ -89,7 +89,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
                 Company
             </Form.Label>
               <Col>
-                <Form.Control type="text" placeholder="Companyt" value={this.props.currentCar.company} />
+                <Form.Control type="text" placeholder="Companyt" defaultValue={this.props.currentCar.company} />
               </Col>
             </Form.Group>
           </Form.Row>
@@ -97,12 +97,12 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Label >
               Description
             </Form.Label>
-            <Form.Control as="textarea" rows="3" value={this.props.currentCar.description}/>
+            <Form.Control as="textarea" rows="3" defaultValue={this.props.currentCar.description} />
           </Form.Group>
           <Form.Group as={Col}>
             <Button type="submit" >Submit</Button>
           </Form.Group>
-        </Form> 
+        </Form>
       </div>);
   }
 }
