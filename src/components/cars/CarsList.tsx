@@ -7,7 +7,8 @@ import { CarSummary } from "./model/CarSummary"
 import { CarDetails } from "./CarDetails";
 import { CarRepository } from "./CarRepository";
 import Modal from "react-bootstrap/Modal";
-
+import Alert from "react-bootstrap/Alert";
+import Container from "react-bootstrap/Container";
 
 // Properties 
 export interface CarListProps {
@@ -18,7 +19,9 @@ export interface CarListState {
   cars: CarSummary[],
   showModal: boolean,
   typeOfOperation: string,
-  currentCar: Car
+  currentCar: Car,
+  showAlert: boolean,
+  alertText: string
 }
 
 /**
@@ -29,7 +32,7 @@ export interface CarListState {
   *   - List of cars. 
   */
 const NEW_TYPE_OF_OPERATION: string = 'New';
-const UPDATE_TYPE_OF_OPERATION : string = 'Update';
+const UPDATE_TYPE_OF_OPERATION: string = 'Update';
 
 export class CarList extends React.Component<CarListProps, CarListState> {
 
@@ -39,38 +42,64 @@ export class CarList extends React.Component<CarListProps, CarListState> {
 
   constructor(props: CarListProps) {
     super(props);
-    this.state = { cars: [], showModal: false, typeOfOperation: NEW_TYPE_OF_OPERATION, currentCar: {} as Car };
+    this.state = { cars: [], showModal: false, showAlert: false, alertText: '', typeOfOperation: NEW_TYPE_OF_OPERATION, currentCar: {} as Car };
     this.refreshList()
     this.carDetailsComponent = React.createRef();
     this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleAlertClose = this.handleAlertClose.bind(this)
     this.onAddButtonClick = this.onAddButtonClick.bind(this)
-  }
-
-  handleModalClose() {
-    this.setState({
-      showModal: false
-    })
   }
 
   refreshList() {
     this.repository.listCars(undefined, 10, '0', "ASC", undefined).then(results => {
+      let list: CarSummary[]
+      if (results.code === "404") {
+        list = []
+      } else {
+        list = results
+      }
       this.setState({
-        cars: results
+        cars: list
       })
     }).catch(error => {
-      alert(error)
+      this.setState({
+        showAlert: true,
+        alertText: 'From server: ' + error.message
+      })
     })
   }
 
+  handleCarUpdate(car: Car) {
+    if (this.state.typeOfOperation === NEW_TYPE_OF_OPERATION) {
+      this.repository.addCar(car).then(result => {
+        this.refreshList()
+      }).catch(error => {
+        alert(error)
+      })
+    } else {
+      this.repository.updateCar(car).then(result => {
+        this.refreshList()
+      }).catch(error => {
+        this.setState({
+          showAlert: true,
+          alertText: 'From server: ' + error.message
+        })
+      })
+    }
+  }
+
   onEditButtonClick(plate: string) {
-    this.repository.getCar(plate).then(result=>{
+    this.repository.getCar(plate).then(result => {
       this.setState({
         showModal: true,
         typeOfOperation: UPDATE_TYPE_OF_OPERATION,
         currentCar: result
       })
-    }).catch(error=>{
-      alert(error)
+    }).catch(error => {
+      this.setState({
+        showAlert: true,
+        alertText: 'From server: ' + error.message
+      })
     })
   }
 
@@ -83,7 +112,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
   }
 
   onSubmitCarClick = (event: any) => {
-    
+
     let elements = event.target.elements
     if (elements.length > 0) {
       let car = this.getCarFromForm(elements)
@@ -95,21 +124,6 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     event.preventDefault()
   }
 
-  handleCarUpdate(car: Car){
-    if (this.state.typeOfOperation === NEW_TYPE_OF_OPERATION) {
-      this.repository.addCar(car).then(result=>{
-        this.refreshList()
-      }).catch(error=>{
-        alert(error)
-      })
-    } else {
-      this.repository.updateCar(car).then(result => {
-        this.refreshList()
-      }).catch(error => {
-        alert(error)
-      })
-    }
-  }
 
   getCarFromForm(elements: any) {
     let plate = elements[0].value
@@ -135,10 +149,34 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     return car
   }
 
+
+  handleAlertClose() {
+    this.setState({
+      showAlert: false,
+      alertText: ''
+    })
+  }
+
+  displayAlert() {
+    return (
+      <Alert show={this.state.showAlert} onClose={this.handleAlertClose} key='alert' variant='warning' dismissible>
+        {this.state.alertText}
+      </Alert>
+    )
+  }
+
+  displaySectionTitle() {
+    return (
+      <div>
+        <h2>All cars for {this.props.userName} </h2>
+      </div>
+    )
+  }
+
   populateTableHeader() {
     return (
       <tr>
-        <th>#</th>
+        <th>Action</th>
         <th>Plate</th>
         <th>Make</th>
         <th>Model</th>
@@ -153,7 +191,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
       return (
         <tr>
           <td>
-            <Button key={car.plate} variant="primary" onClick={() => { this.onEditButtonClick(car.plate) }}>Edit</Button>
+            <Button key={car.plate} variant="primary" onClick={() => { this.onEditButtonClick(car.plate) }}>View</Button>
           </td>
           <td>{car.plate}</td>
           <td>{car.make}</td>
@@ -165,12 +203,15 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     })
   }
 
-  render() {
+  handleModalClose() {
+    this.setState({
+      showModal: false
+    })
+  }
+
+  displayTable() {
     return (
       <div>
-        <div>
-          <h2>All cars for {this.props.userName} </h2>
-        </div>
         <div style={{ textAlign: 'right' }}>
           <ButtonGroup aria-label="Tool bar">
             <Button variant="success" onClick={() => { this.onAddButtonClick() }}>+Add car</Button>
@@ -178,7 +219,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
         </div>
         <br />
         <div>
-          <Table striped bordered hover>
+          <Table striped responsive hover>
             <thead>
               {this.populateTableHeader()}
             </thead>
@@ -187,6 +228,18 @@ export class CarList extends React.Component<CarListProps, CarListState> {
             </tbody>
           </Table>
         </div>
+      </div>
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        <Container>
+          {this.displayAlert()}
+          {this.displaySectionTitle()}
+          {this.displayTable()}
+        </Container>
 
         <Modal show={this.state.showModal} onHide={this.handleModalClose} size="lg" >
           <Modal.Header closeButton>
