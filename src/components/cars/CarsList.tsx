@@ -51,6 +51,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
   }
 
   refreshList() {
+    
     this.repository.listCars(undefined, 10, '0', "ASC", undefined).then(results => {
       let list: CarSummary[]
       if (results.code === "404") {

@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"democarsuibd5202d7": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
