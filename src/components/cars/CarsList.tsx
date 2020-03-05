@@ -36,11 +36,12 @@ const UPDATE_TYPE_OF_OPERATION: string = 'Update';
 
 export class CarList extends React.Component<CarListProps, CarListState> {
 
-
+  
   repository = new CarRepository();
   carDetailsComponent: React.RefObject<CarDetails>;
 
   constructor(props: CarListProps) {
+    
     super(props);
     this.state = { cars: [], showModal: false, showAlert: false, alertText: '', typeOfOperation: NEW_TYPE_OF_OPERATION, currentCar: {} as Car };
     this.refreshList()
@@ -48,6 +49,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     this.handleModalClose = this.handleModalClose.bind(this)
     this.handleAlertClose = this.handleAlertClose.bind(this)
     this.onAddButtonClick = this.onAddButtonClick.bind(this)
+ 
   }
 
   refreshList() {
@@ -65,7 +67,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     }).catch(error => {
       this.setState({
         showAlert: true,
-        alertText: 'From server: ' + error.message
+        alertText: this.handlerErrorFromServer(error)
       })
     })
   }
@@ -83,7 +85,7 @@ export class CarList extends React.Component<CarListProps, CarListState> {
       }).catch(error => {
         this.setState({
           showAlert: true,
-          alertText: 'From server: ' + error.message
+          alertText: this.handlerErrorFromServer(error)
         })
       })
     }
@@ -99,9 +101,19 @@ export class CarList extends React.Component<CarListProps, CarListState> {
     }).catch(error => {
       this.setState({
         showAlert: true,
-        alertText: 'From server: ' + error.message
+        alertText: this.handlerErrorFromServer(error)
       })
     })
+  }
+
+  handlerErrorFromServer(error:any){
+    let message = "From server -  unexpected error : "
+    if(error.status === 401){
+      message = 'Unauthorized request'
+    } else {
+      message = message+error.message
+    }
+    return message;
   }
 
   onAddButtonClick() {

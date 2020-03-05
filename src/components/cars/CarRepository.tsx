@@ -2,10 +2,14 @@
 import { Car } from "./model/Car"
 import { CarSummary } from "./model/CarSummary"
 import { CarsApi } from "./typescript-fetch-client/api"
+import api_details from '../../api-exports';
+import { Configuration, ConfigurationParameters } from "./typescript-fetch-client/configuration";
+import { Auth } from 'aws-amplify';
 
 export class CarRepository {
 
-  private fetchApi: CarsApi;
+  private apiConfigurationParams: ConfigurationParameters = {};
+
 
   mockDataSummary: CarSummary[] = [
     { "plate": "GLD-CA01", "make": "Audi", "model": "A3", "description": "Test", "typeOfUse": "Particular" },
@@ -23,28 +27,45 @@ export class CarRepository {
     },
   ];
 
+  waitUser = ()=> Auth.currentSession().then(res => {
+    let accessToken = res.getAccessToken()
+    let jwt = accessToken.getJwtToken()
+    this.apiConfigurationParams = {
+      basePath: api_details.base_endpoint,
+      apiKey: (name: string) => jwt
+    }
+  })
+
   constructor() {
-    this.fetchApi = new CarsApi();
+ 
   }
 
-  listCars(fields?: Array<string>, limit?: number, page?: string, sortOrder?: 'ASC' | 'DESC', sortBy?: string): Promise<any> {
-    return this.fetchApi.listCars(fields, limit, page, sortOrder, sortBy, {});
+
+
+  async listCars(fields?: Array<string>, limit?: number, page?: string, sortOrder?: 'ASC' | 'DESC', sortBy?: string): Promise<any> {
+    await this.waitUser()
+    let api = new CarsApi(new Configuration(this.apiConfigurationParams));
+    return api.listCars(fields, limit, page, sortOrder, sortBy, {});
   }
 
-  listMockCars(){
+  listMockCars() {
     return this.mockDataSummary;
   }
 
-  getCar(id: string): Promise<Car> {
-    return this.fetchApi.getCar(id, undefined, undefined);
+  async getCar(id: string): Promise<Car> {
+    await this.waitUser()
+    let api = new CarsApi(new Configuration(this.apiConfigurationParams));
+    return api.getCar(id, undefined, undefined);
   }
 
-  getMockCar(id: string): Car{
+  getMockCar(id: string): Car {
     return this.mockData.filter(x => x.plate === id)[0];
   }
 
-  addCar(car: Car): Promise<Car> {
-    return this.fetchApi.addCar(car, undefined)
+  async addCar(car: Car): Promise<Car> {
+    await this.waitUser()
+    let api = new CarsApi(new Configuration(this.apiConfigurationParams));
+    return api.addCar(car, undefined)
   }
 
   addMockCar(car: Car): Car {
@@ -52,11 +73,13 @@ export class CarRepository {
     return car
   }
 
-  updateCar(car: Car): Promise<Car> {
-   return this.fetchApi.updateCar(car,undefined)
+  async updateCar(car: Car): Promise<Car> {
+    await this.waitUser()
+    let api = new CarsApi(new Configuration(this.apiConfigurationParams));
+    return api.updateCar(car, undefined)
   }
 
-  updateMockCar(car: Car) : Car{
+  updateMockCar(car: Car): Car {
     let element = this.mockData.filter(x => x.plate === car.plate)[0]
     let index = this.mockData.indexOf(element)
     this.mockData[index] = car
