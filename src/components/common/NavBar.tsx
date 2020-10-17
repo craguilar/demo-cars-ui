@@ -19,7 +19,7 @@ export class NavBar extends React.Component<NavBarProps, NavBarState>{
     return (
       <div>
         <Navbar bg="light" variant="light">
-          <Navbar.Brand href="/">Cars demo</Navbar.Brand>
+          <Navbar.Brand href="/">Cars demo app</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="about">About</Nav.Link>
