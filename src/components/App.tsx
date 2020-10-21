@@ -9,11 +9,7 @@ import { createBrowserHistory } from 'history';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // Authentication
-import awsconfig from '../aws-exports';
-import Amplify from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react';
-
-Amplify.configure(awsconfig);
 
 // Routing
 const history = createBrowserHistory()
