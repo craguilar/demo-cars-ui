@@ -27,7 +27,7 @@ export class CarRepository {
     },
   ];
 
-  waitUser = ()=> Auth.currentSession().then(res => {
+  waitUser = () => Auth.currentSession().then((res: any) => {
     let accessToken = res.getAccessToken()
     let jwt = accessToken.getJwtToken()
     this.apiConfigurationParams = {

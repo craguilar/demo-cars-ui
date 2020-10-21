@@ -21,6 +21,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
   }
 
   render() {
+    let rowsInControl = 3;
     return (
       <div>
         <Form onSubmit={this.props.onSubmit}>
@@ -97,7 +98,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Label >
               Description
             </Form.Label>
-            <Form.Control as="textarea" rows="3" defaultValue={this.props.currentCar.description} />
+            <Form.Control as="textarea" rows={rowsInControl}  defaultValue={this.props.currentCar.description} />
           </Form.Group>
           <Form.Group as={Col}>
             <Button type="submit" >Submit</Button>
