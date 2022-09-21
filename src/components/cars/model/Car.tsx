@@ -1,3 +1,5 @@
+import { Image } from "./Image";
+
 /**
  * Main car object . 
  * @export
@@ -58,4 +60,12 @@ export interface Car {
    * @memberof Car
    */
   company?: string;
+
+  /**
+   * 
+   * @type {Array<Image>}
+   * @memberof Car
+   */
+  image? : string
+  //images?: Array<typeof Image>;
 }

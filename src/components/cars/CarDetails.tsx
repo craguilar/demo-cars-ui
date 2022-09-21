@@ -10,14 +10,32 @@ export interface CarDetailsProps {
 }
 
 export interface CarDetailsState {
-
+  image: string;
 }
 
 export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState>{
 
   constructor(props: CarDetailsProps) {
     super(props);
-    this.state = { currentCar: {} as Car };
+    //this.state = { currentCar: {} as Car };
+    this.state = { image: "" };
+    this.addImage = this.addImage.bind(this);
+  }
+
+  addImage(image: any) {
+    image.preventDefault();
+    let url = URL.createObjectURL(image.target.files[0])
+    this.setState({
+      image: url
+    })
+    /*
+    this.setState(prevState => {
+      let car = Object.assign({}, prevState.currentCar);  // creating copy of state variable jasper
+      car.image = url;                     // update the name property, assign a new value 
+      return car;                                 // return new object jasper object
+    })
+    */
+    console.log('You changed an image : ' + image.target);
   }
 
   render() {
@@ -37,7 +55,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="makeInput">
               <Form.Label column >
                 Make
-            </Form.Label>
+              </Form.Label>
               <Col>
                 <Form.Control type="text" placeholder="Make" defaultValue={this.props.currentCar.make} required />
               </Col>
@@ -45,7 +63,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="modelInput">
               <Form.Label column>
                 Model
-            </Form.Label>
+              </Form.Label>
               <Col>
                 <Form.Control type="text" placeholder="Model" defaultValue={this.props.currentCar.model} required />
               </Col>
@@ -53,7 +71,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="typeOfUseInput">
               <Form.Label>
                 Type of use
-            </Form.Label>
+              </Form.Label>
               <Form.Control as="select" defaultValue={this.props.currentCar.typeOfUse}>
                 <option>Particular</option>
                 <option>Company</option>
@@ -64,7 +82,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="nationalKeyInput">
               <Form.Label column >
                 National key
-            </Form.Label>
+              </Form.Label>
               <Col>
                 <Form.Control type="text" placeholder="Tarjeta de circulacion" defaultValue={this.props.currentCar.nationalKey} />
               </Col>
@@ -72,7 +90,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="serialNumberInput">
               <Form.Label column >
                 Serial Number
-            </Form.Label>
+              </Form.Label>
               <Col>
                 <Form.Control type="text" placeholder="" defaultValue={this.props.currentCar.serialNumber} />
               </Col>
@@ -80,7 +98,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="engineSerialNumberInput">
               <Form.Label column >
                 Engine serial number
-            </Form.Label>
+              </Form.Label>
               <Col>
                 <Form.Control type="text" placeholder="" defaultValue={this.props.currentCar.engineSerialNumber} />
               </Col>
@@ -88,7 +106,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Group as={Col} controlId="companyInput">
               <Form.Label >
                 Company
-            </Form.Label>
+              </Form.Label>
               <Col>
                 <Form.Control type="text" placeholder="Companyt" defaultValue={this.props.currentCar.company} />
               </Col>
@@ -98,7 +116,7 @@ export class CarDetails extends React.Component<CarDetailsProps, CarDetailsState
             <Form.Label >
               Description
             </Form.Label>
-            <Form.Control as="textarea" rows={rowsInControl}  defaultValue={this.props.currentCar.description} />
+            <Form.Control as="textarea" rows={rowsInControl} defaultValue={this.props.currentCar.description} />
           </Form.Group>
           <Form.Group as={Col}>
             <Button type="submit" >Submit</Button>

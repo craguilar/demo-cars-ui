@@ -10,6 +10,7 @@ export class CarRepository {
 
   private apiConfigurationParams: ConfigurationParameters = {};
 
+  /* Mock objects used for testing when API is not available */
 
   mockDataSummary: CarSummary[] = [
     { "plate": "GLD-CA01", "make": "Audi", "model": "A3", "description": "Test", "typeOfUse": "Particular" },

@@ -1,5 +1,7 @@
 const api_details = {
-  "base_endpoint": "https://uq5bl9t96b.execute-api.us-east-2.amazonaws.com/dev/",
+  "dev_base_endpoint": "http://localhost:8080/20200201",
+  "prod_endpoint" : "https://2hax3lzg1j.execute-api.us-east-2.amazonaws.com/20200201",
+  "base_endpoint":  "https://2hax3lzg1j.execute-api.us-east-2.amazonaws.com/20200201",
   "base_endpoint_region": "us-east-2"
 };    
 
