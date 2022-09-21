@@ -21,8 +21,7 @@
     "react-bootstrap": "^1.6.6",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.3.3",
-    "react-scripts": "3.3.0",
-    "typescript": "^3.9.10"
+    "react-scripts": "3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "typescript": "^4.8.3"
   }
 }
