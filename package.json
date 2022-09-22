@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui": "^2.0.5",
-    "@aws-amplify/ui-react": "^0.2.38",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -13,7 +12,7 @@
     "@types/react": "^16.14.32",
     "@types/react-dom": "^16.9.16",
     "@types/react-router-dom": "^5.3.3",
-    "aws-amplify": "^2.3.0",
+    "aws-amplify": "^4.3.36",
     "aws-amplify-react": "^3.1.9",
     "bootstrap": "^4.6.2",
     "portable-fetch": "^3.0.0",
@@ -21,7 +20,7 @@
     "react-bootstrap": "^1.6.6",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.3.3",
-    "react-scripts": "3.3.0"
+    "react-scripts": "^3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
