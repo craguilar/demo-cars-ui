@@ -3,6 +3,7 @@ import { CarList } from "./cars/CarsList";
 import { About } from "./about/About";
 import { Banner } from "./common/Banner";
 import { NavBar } from "./common/NavBar";
+import { Footer } from "./common/Footer";
 import { Router,Route} from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 // Importing the Bootstrap CSS
@@ -11,7 +12,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Authentication
 import { withAuthenticator } from 'aws-amplify-react';
 import { Auth } from 'aws-amplify';
-
 // Routing
 const history = createBrowserHistory()
 
@@ -19,7 +19,7 @@ const history = createBrowserHistory()
 const App: React.FC = () => {
   
   const [currentUser,setCurrentUser] = useState('Anonymous');
-
+  // Get current logged user 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then(authUser => {
@@ -39,6 +39,7 @@ const App: React.FC = () => {
         <Route exact path="/" > <CarList userName={currentUser}/></Route>
         <Route exact path="/about"> <About/></Route>
       </Router>
+      <Footer/>
     </div>
   );
 }
