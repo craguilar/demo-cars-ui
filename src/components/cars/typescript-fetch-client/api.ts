@@ -96,7 +96,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
             if (body === null || body === undefined) {
                 throw new RequiredError('body', 'Required parameter body was null or undefined when calling addCar.');
             }
-            const localVarPath = `/cars/`;
+            const localVarPath = `/cars`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
@@ -178,7 +178,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         listCars(fields?: Array<string>, limit?: number, page?: string, sortOrder?: 'ASC' | 'DESC', sortBy?: string, options: any = {}): FetchArgs {
-            const localVarPath = `/cars/`;
+            const localVarPath = `/cars`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
@@ -234,7 +234,7 @@ export const CarsApiFetchParamCreator = function (configuration?: Configuration)
             if (body === null || body === undefined) {
                 throw new RequiredError('body', 'Required parameter body was null or undefined when calling updateCar.');
             }
-            const localVarPath = `/cars/`;
+            const localVarPath = `/cars`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
