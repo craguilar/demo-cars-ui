@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CarList } from "./cars/CarsList";
 import { About } from "./about/About";
 import { Banner } from "./common/Banner";
@@ -10,22 +10,39 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // Authentication
 import { withAuthenticator } from 'aws-amplify-react';
+import { Auth } from 'aws-amplify';
 
 // Routing
 const history = createBrowserHistory()
 
+
 const App: React.FC = () => {
   
+  const [currentUser,setCurrentUser] = useState('Anonymous');
+
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then(authUser => {
+        console.log(authUser)
+        setCurrentUser(authUser.username)
+      })
+      .catch(error => {
+        console.error(error)
+      });
+  }, []);
+
   return (  
     <div className="App">
       <NavBar />
       <Banner />
       <Router history={history} >
-        <Route exact path="/" component={CarList} />
-        <Route exact path="/about" component={About} />
+        <Route exact path="/" > <CarList userName={currentUser}/></Route>
+        <Route exact path="/about"> <About/></Route>
       </Router>
     </div>
   );
 }
+
+
 
 export default withAuthenticator(App, true);
