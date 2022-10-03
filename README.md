@@ -8,9 +8,11 @@ This template uses [React Bootsrap](https://react-bootstrap.netlify.com/) as UI 
 
 1. Install yarn:
 
-```bash
-npm install --global yarn
-```
+  ```bash
+  npm install --global yarn
+  ```
+
+  NOTE: Why did I decided to change from npm to yarn?  Amplify seems to assume the build tool based on package.json details [see](https://docs.aws.amazon.com/amplify/latest/userguide/build-settings.html) , and even if locally I was using npm the build was executing yarn. There were discrepancies observed between yarn and npm builds which were fixed once I completely moved to yarn , no other reason for the move.
 
 ## Available Scripts
 
@@ -38,6 +40,13 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## ToDo
+
+- Cypress Component Testing
+- https://github.com/toddbluhm/env-cmd
+- https://storybook.js.org
+- https://reactjs.org/docs/state-and-lifecycle.html
 
 ## Learn More
 
